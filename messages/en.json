@@ -36,7 +36,13 @@
     "item2Title": "Annual Report",
     "item2Excerpt": "Key achievements and progress over the past year.",
     "item3Title": "Regional Meeting",
-    "item3Excerpt": "Discussion on local development priorities."
+    "item3Excerpt": "Discussion on local development priorities.",
+    "item4Title": "Youth Wing Conference",
+    "item4Excerpt": "Empowering the next generation of leaders.",
+    "item5Title": "Welfare Program Launch",
+    "item5Excerpt": "New initiatives for community development.",
+    "item6Title": "District Committee Meeting",
+    "item6Excerpt": "Strategic planning for the upcoming year."
   },
   "leader": {
     "leadership": "Leadership",

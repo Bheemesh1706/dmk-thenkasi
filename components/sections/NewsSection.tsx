@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SectionContainer } from "@/components/layout/SectionContainer";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { NewsCarousel, type NewsCarouselItem } from "@/components/sections/NewsCarousel";
 
 interface NewsItem {
   id: string;
@@ -24,29 +24,27 @@ const mockNewsItems: NewsItem[] = [
   { id: "1", titleKey: "item1Title", excerptKey: "item1Excerpt", date: "2025-02-20", category: "Party" },
   { id: "2", titleKey: "item2Title", excerptKey: "item2Excerpt", date: "2025-02-15", category: "Report" },
   { id: "3", titleKey: "item3Title", excerptKey: "item3Excerpt", date: "2025-02-10", category: "Party" },
+  { id: "4", titleKey: "item4Title", excerptKey: "item4Excerpt", date: "2025-02-08", category: "Party" },
+  { id: "5", titleKey: "item5Title", excerptKey: "item5Excerpt", date: "2025-02-05", category: "Report" },
+  { id: "6", titleKey: "item6Title", excerptKey: "item6Excerpt", date: "2025-02-01", category: "Party" },
 ];
 
 export async function NewsSection({ locale, items = mockNewsItems }: NewsSectionProps) {
   const t = await getTranslations("news");
 
+  const carouselItems: NewsCarouselItem[] = items.map((item) => ({
+    id: item.id,
+    category: item.category ? t(`category.${item.category.toLowerCase()}`) : "",
+    title: item.titleKey ? t(item.titleKey) : item.title ?? "",
+    excerpt: item.excerptKey ? t(item.excerptKey) : item.excerpt ?? "",
+    date: item.date,
+  }));
+
   return (
     <SectionContainer>
       <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t("title")}</h2>
-      <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((item) => (
-          <Card key={item.id} className="overflow-hidden">
-            <CardHeader className="pb-2">
-              <span className="text-xs font-medium text-black/80">
-                {item.category ? t(`category.${item.category.toLowerCase()}`) : ""}
-              </span>
-              <h3 className="text-lg font-semibold">{item.titleKey ? t(item.titleKey) : item.title}</h3>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-black/80 group-hover:text-black/90">{item.excerptKey ? t(item.excerptKey) : item.excerpt}</p>
-              <p className="mt-2 text-xs text-black/70 group-hover:text-black/80">{item.date}</p>
-            </CardContent>
-          </Card>
-        ))}
+      <div className="mt-8">
+        <NewsCarousel items={carouselItems} />
       </div>
       <div className="mt-8 text-center">
         <Button variant="outline" asChild>
