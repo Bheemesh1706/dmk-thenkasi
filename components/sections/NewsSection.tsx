@@ -21,12 +21,11 @@ interface NewsSectionProps {
 }
 
 const mockNewsItems: NewsItem[] = [
-  { id: "1", titleKey: "item1Title", excerptKey: "item1Excerpt", date: "2025-02-20", category: "Party" },
-  { id: "2", titleKey: "item2Title", excerptKey: "item2Excerpt", date: "2025-02-15", category: "Report" },
-  { id: "3", titleKey: "item3Title", excerptKey: "item3Excerpt", date: "2025-02-10", category: "Party" },
-  { id: "4", titleKey: "item4Title", excerptKey: "item4Excerpt", date: "2025-02-08", category: "Party" },
-  { id: "5", titleKey: "item5Title", excerptKey: "item5Excerpt", date: "2025-02-05", category: "Report" },
-  { id: "6", titleKey: "item6Title", excerptKey: "item6Excerpt", date: "2025-02-01", category: "Party" },
+  { id: "1", titleKey: "item1Title", excerptKey: "item1Excerpt", date: "2026-02-23", category: "partyWork" },
+  { id: "2", titleKey: "item2Title", excerptKey: "item2Excerpt", date: "2026-02-23", category: "partyWork" },
+  { id: "3", titleKey: "item3Title", excerptKey: "item3Excerpt", date: "2026-02-23", category: "partyWork" },
+  { id: "4", titleKey: "item4Title", excerptKey: "item4Excerpt", date: "2026-02-23", category: "partyWork" },
+  { id: "5", titleKey: "item5Title", excerptKey: "item5Excerpt", date: "2026-02-23", category: "partyWork" },
 ];
 
 export async function NewsSection({ locale, items = mockNewsItems }: NewsSectionProps) {
@@ -46,11 +45,11 @@ export async function NewsSection({ locale, items = mockNewsItems }: NewsSection
       <div className="mt-8">
         <NewsCarousel items={carouselItems} />
       </div>
-      <div className="mt-8 text-center">
+      {/* <div className="mt-8 text-center">
         <Button variant="outline" asChild>
           <Link href={`/${locale}/resources/events`}>{t("learnMore")}</Link>
         </Button>
-      </div>
+      </div> */}
     </SectionContainer>
   );
 }

@@ -78,9 +78,6 @@ export function NewsCarousel({ items }: NewsCarouselProps) {
                 )}
               >
                 <CardHeader className="pb-2">
-                  <span className="text-xs font-medium text-black/80">
-                    {item.category}
-                  </span>
                   <h3 className="text-lg font-semibold">{item.title}</h3>
                 </CardHeader>
                 <CardContent>

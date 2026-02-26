@@ -29,20 +29,19 @@
     "learnMore": "Learn more",
     "category": {
       "party": "Party",
-      "report": "Report"
+      "report": "Report",
+      "partyWork": "Party Work"
     },
-    "item1Title": "Community Initiative Launch",
-    "item1Excerpt": "Building stronger community ties through collaboration.",
-    "item2Title": "Annual Report",
-    "item2Excerpt": "Key achievements and progress over the past year.",
-    "item3Title": "Regional Meeting",
-    "item3Excerpt": "Discussion on local development priorities.",
-    "item4Title": "Youth Wing Conference",
-    "item4Excerpt": "Empowering the next generation of leaders.",
-    "item5Title": "Welfare Program Launch",
-    "item5Excerpt": "New initiatives for community development.",
-    "item6Title": "District Committee Meeting",
-    "item6Excerpt": "Strategic planning for the upcoming year."
+    "item1Title": "Vitamin A Program for Children",
+    "item1Excerpt": "9:30 AM — Vitamin A nutritional fluid provided to children aged 6 months to 5 years. Surandai Government Sub Primary Health Center.",
+    "item2Title": "New Passenger Shelter Inaugurated",
+    "item2Excerpt": "10:00 AM — New passenger shelter inaugurated at Surandai Municipality, Papanasam.",
+    "item3Title": "New Auditorium Inaugurated",
+    "item3Excerpt": "11:00 AM — New auditorium inaugurated at Thirukoodapathi, Kadayanallur South Union.",
+    "item4Title": "Campaign Launch — Ward 333",
+    "item4Excerpt": "4:00 PM — Campaign started by winning Tamil women in municipal ward no. 333.",
+    "item5Title": "Campaign Launch — Ward 345",
+    "item5Excerpt": "5:00 PM — Campaign started by winning Tamil women in municipal ward no. 345."
   },
   "leader": {
     "leadership": "Leadership",
