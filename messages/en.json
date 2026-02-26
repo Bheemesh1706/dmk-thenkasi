@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "Home",
+    "party": "Party",
+    "ideology": "Ideology",
+    "history": "History",
+    "organizationStructure": "Organization Structure",
+    "dmkLeadership": "DMK Leadership",
+    "districtSecretaries": "District Secretaries",
+    "committeeMembers": "Committee Members",
+    "frontals": "Frontals",
+    "electedRepresentatives": "Elected Representatives",
+    "achievements": "Achievements",
+    "resources": "Resources",
+    "events": "Events",
+    "media": "Media",
+    "gallery": "Gallery"
+  },
+  "home": {
+    "title": "Welcome",
+    "subtitle": "Building a stronger community together"
+  },
+  "news": {
+    "title": "Recent Updates",
+    "learnMore": "Learn more"
+  },
+  "common": {
+    "learnMore": "Learn more",
+    "download": "Download",
+    "joinUs": "Join Us"
+  }
+}

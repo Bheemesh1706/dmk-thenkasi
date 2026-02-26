@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "முகப்பு",
+    "party": "கழகம்",
+    "ideology": "கொள்கைகள்",
+    "history": "வரலாறு",
+    "organizationStructure": "கழக அமைப்பு",
+    "dmkLeadership": "தலைமை",
+    "districtSecretaries": "மாவட்ட செயலாளர்கள்",
+    "committeeMembers": "குழு உறுப்பினர்கள்",
+    "frontals": "சார்பு அணிகள்",
+    "electedRepresentatives": "மக்கள் பிரதிநிதிகள்",
+    "achievements": "சாதனைகள்",
+    "resources": "வெளியீடுகள்",
+    "events": "நிகழ்வுகள்",
+    "media": "ஊடகம்",
+    "gallery": "படத் தொகுப்பு"
+  },
+  "home": {
+    "title": "வரவேற்பு",
+    "subtitle": "ஒன்றாக வலுவான சமூகத்தை உருவாக்குவோம்"
+  },
+  "news": {
+    "title": "அண்மை நிகழ்வுகள்",
+    "learnMore": "மேலும் அறிய"
+  },
+  "common": {
+    "learnMore": "மேலும் அறிய",
+    "download": "பதிவிறக்கம்",
+    "joinUs": "இணையுங்கள்"
+  }
+}

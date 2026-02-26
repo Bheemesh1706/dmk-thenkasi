@@ -1,0 +1,51 @@
+import { setRequestLocale } from "next-intl/server";
+import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { SectionContainer } from "@/components/layout/SectionContainer";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+
+export default async function PartyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("nav");
+  const tCommon = await getTranslations("common");
+
+  const links = [
+    { key: "ideology", href: `/${locale}/party/ideology` },
+    { key: "history", href: `/${locale}/party/history` },
+    { key: "organizationStructure", href: `/${locale}/party/organizationals` },
+    { key: "frontals", href: `/${locale}/party/frontals` },
+    { key: "electedRepresentatives", href: `/${locale}/party/electedrepresentatives` },
+    { key: "achievements", href: `/${locale}/party/achievements` },
+  ];
+
+  return (
+    <main>
+      <SectionContainer>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
+          {t("party")}
+        </h1>
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {links.map(({ key, href }) => (
+            <Link key={key} href={href}>
+              <Card className="h-full transition-colors hover:border-primary/50">
+                <CardHeader>
+                  <h2 className="font-semibold">{t(key)}</h2>
+                </CardHeader>
+                <CardContent>
+                  <span className="text-sm text-muted-foreground hover:text-primary">
+                    {tCommon("learnMore")} →
+                  </span>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </SectionContainer>
+    </main>
+  );
+}
