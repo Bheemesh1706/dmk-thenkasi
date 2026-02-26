@@ -6,8 +6,10 @@ import { Button } from "@/components/ui/button";
 
 interface NewsItem {
   id: string;
-  title: string;
-  excerpt: string;
+  titleKey?: string;
+  excerptKey?: string;
+  title?: string;
+  excerpt?: string;
   date: string;
   link?: string;
   category?: string;
@@ -19,27 +21,9 @@ interface NewsSectionProps {
 }
 
 const mockNewsItems: NewsItem[] = [
-  {
-    id: "1",
-    title: "Community Initiative Launch",
-    excerpt: "Building stronger community ties through collaboration.",
-    date: "2025-02-20",
-    category: "Party",
-  },
-  {
-    id: "2",
-    title: "Annual Report",
-    excerpt: "Key achievements and progress over the past year.",
-    date: "2025-02-15",
-    category: "Report",
-  },
-  {
-    id: "3",
-    title: "Regional Meeting",
-    excerpt: "Discussion on local development priorities.",
-    date: "2025-02-10",
-    category: "Party",
-  },
+  { id: "1", titleKey: "item1Title", excerptKey: "item1Excerpt", date: "2025-02-20", category: "Party" },
+  { id: "2", titleKey: "item2Title", excerptKey: "item2Excerpt", date: "2025-02-15", category: "Report" },
+  { id: "3", titleKey: "item3Title", excerptKey: "item3Excerpt", date: "2025-02-10", category: "Party" },
 ];
 
 export async function NewsSection({ locale, items = mockNewsItems }: NewsSectionProps) {
@@ -50,16 +34,16 @@ export async function NewsSection({ locale, items = mockNewsItems }: NewsSection
       <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">{t("title")}</h2>
       <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
-          <Card key={item.id} className="overflow-hidden border-primary/20 hover:border-primary/40 transition-colors">
+          <Card key={item.id} className="overflow-hidden">
             <CardHeader className="pb-2">
-              <span className="text-xs font-medium text-muted-foreground">
-                {item.category}
+              <span className="text-xs font-medium text-black/80">
+                {item.category ? t(`category.${item.category.toLowerCase()}`) : ""}
               </span>
-              <h3 className="text-lg font-semibold">{item.title}</h3>
+              <h3 className="text-lg font-semibold">{item.titleKey ? t(item.titleKey) : item.title}</h3>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">{item.excerpt}</p>
-              <p className="mt-2 text-xs text-muted-foreground">{item.date}</p>
+              <p className="text-sm text-black/80 group-hover:text-black/90">{item.excerptKey ? t(item.excerptKey) : item.excerpt}</p>
+              <p className="mt-2 text-xs text-black/70 group-hover:text-black/80">{item.date}</p>
             </CardContent>
           </Card>
         ))}

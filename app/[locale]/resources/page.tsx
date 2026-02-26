@@ -12,6 +12,7 @@ export default async function ResourcesPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("nav");
+  const tCommon = await getTranslations("common");
 
   const resources = [
     { key: "events", href: `/${locale}/resources/events` },
@@ -28,12 +29,12 @@ export default async function ResourcesPage({
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {resources.map(({ key, href }) => (
             <Link key={key} href={href}>
-              <Card className="h-full transition-colors hover:border-primary/50">
+              <Card className="h-full">
                 <CardHeader>
                   <h2 className="font-semibold">{t(key)}</h2>
                 </CardHeader>
                 <CardContent>
-                  <span className="text-sm text-muted-foreground">View →</span>
+                  <span className="text-sm text-black/80 group-hover:text-black">{tCommon("view")}</span>
                 </CardContent>
               </Card>
             </Link>

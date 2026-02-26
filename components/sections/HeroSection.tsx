@@ -19,8 +19,9 @@ export async function HeroSection({
   ctaLabel,
 }: HeroSectionProps) {
   const t = await getTranslations("common");
-  const displayHeadline = headline ?? "Tenkasi";
-  const displaySubheadline = subheadline ?? (locale === "ta" ? "வரவேற்பு" : "Welcome");
+  const tHome = await getTranslations("home");
+  const displayHeadline = headline ?? tHome("headline");
+  const displaySubheadline = subheadline ?? tHome("title");
   const displayCtaLabel = ctaLabel ?? t("learnMore");
 
   return (

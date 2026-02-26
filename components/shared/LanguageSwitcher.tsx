@@ -14,8 +14,8 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const locales = [
-  { code: "en" as const, label: "English" },
   { code: "ta" as const, label: "தமிழ்" },
+  { code: "en" as const, label: "English" },
 ];
 
 export function LanguageSwitcher({ className }: { className?: string }) {

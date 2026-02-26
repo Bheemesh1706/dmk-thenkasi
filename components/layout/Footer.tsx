@@ -3,15 +3,17 @@ import { getTranslations } from "next-intl/server";
 
 export async function Footer({ locale }: { locale: string }) {
   const t = await getTranslations("nav");
+  const tFooter = await getTranslations("footer");
+  const tHome = await getTranslations("home");
   const prefix = `/${locale}`;
   return (
     <footer className="border-t border-[var(--border)] bg-[var(--background-dark)] text-white">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h3 className="text-sm font-semibold text-white">Tenkasi</h3>
+            <h3 className="text-sm font-semibold text-white">{tHome("headline")}</h3>
             <p className="mt-2 text-sm text-[var(--foreground-light)]">
-              Building a stronger community together.
+              {tFooter("tagline")}
             </p>
           </div>
           <div>
@@ -66,7 +68,7 @@ export async function Footer({ locale }: { locale: string }) {
           </div>
         </div>
         <div className="mt-8 border-t border-white/10 pt-8 text-center text-sm text-[var(--foreground-light)]">
-          © {new Date().getFullYear()} Tenkasi. All rights reserved.
+          © {new Date().getFullYear()} {tFooter("copyright")}
         </div>
       </div>
     </footer>

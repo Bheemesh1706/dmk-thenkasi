@@ -1,3 +1,4 @@
+import { getTranslations } from "next-intl/server";
 import { SectionContainer } from "@/components/layout/SectionContainer";
 
 interface MediaGallerySectionProps {
@@ -14,13 +15,14 @@ const mockImages = [
   { id: "6", url: "/vercel.svg", alt: "Placeholder 6" },
 ];
 
-export function MediaGallerySection({
+export async function MediaGallerySection({
   images = mockImages,
 }: MediaGallerySectionProps) {
+  const t = await getTranslations("gallery");
   return (
     <SectionContainer>
       <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-        Gallery
+        {t("title")}
       </h2>
       <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-3">
         {images.map((img) => (

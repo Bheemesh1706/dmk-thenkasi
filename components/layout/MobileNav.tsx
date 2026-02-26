@@ -25,6 +25,7 @@ const navLinks = [
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const t = useTranslations("nav");
+  const tCommon = useTranslations("common");
   const locale = useLocale();
   const getHref = (path: string) => `/${locale}${path ? `/${path}` : ""}`;
 
@@ -57,7 +58,7 @@ export function MobileNav() {
           ))}
           <Separator />
           <div className="flex flex-col gap-2">
-            <span className="text-sm text-muted-foreground">Language</span>
+            <span className="text-sm text-muted-foreground">{tCommon("language")}</span>
             <LanguageSwitcher />
           </div>
         </nav>

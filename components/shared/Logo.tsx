@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 export function Logo() {
   const locale = useLocale();
+  const t = useTranslations("logo");
   return (
     <Link
       href={`/${locale}`}
@@ -19,7 +20,7 @@ export function Logo() {
         className="h-8 w-auto object-contain sm:h-10"
       />
       <span className="text-sm font-extrabold tracking-widest sm:text-base">
-        DRAVIDA MUNNETRA KAZHAGAM
+        {t("title")}
       </span>
     </Link>
   );

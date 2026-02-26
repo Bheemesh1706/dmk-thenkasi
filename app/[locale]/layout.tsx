@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { Geist, Geist_Mono, Noto_Sans_Tamil } from "next/font/google";
 import { notFound } from "next/navigation";
 import { routing } from "@/lib/i18n/routing";
@@ -33,13 +33,15 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const tHome = await getTranslations({ locale, namespace: "home" });
+  const tLogo = await getTranslations({ locale, namespace: "logo" });
   return {
-    title: "Tenkasi",
-    description: "Building a stronger community together",
+    title: tLogo("title"),
+    description: tHome("subtitle"),
     alternates: {
       languages: {
-        en: "/en",
         ta: "/ta",
+        en: "/en",
       },
     },
   };

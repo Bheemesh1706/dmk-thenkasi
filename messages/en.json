@@ -16,17 +16,64 @@
     "media": "Media",
     "gallery": "Gallery"
   },
+  "logo": {
+    "title": "Tenkasi South District D.M.K"
+  },
   "home": {
     "title": "Welcome",
-    "subtitle": "Building a stronger community together"
+    "subtitle": "Building a stronger community together",
+    "headline": "Tenkasi"
   },
   "news": {
     "title": "Recent Updates",
+    "learnMore": "Learn more",
+    "category": {
+      "party": "Party",
+      "report": "Report"
+    },
+    "item1Title": "Community Initiative Launch",
+    "item1Excerpt": "Building stronger community ties through collaboration.",
+    "item2Title": "Annual Report",
+    "item2Excerpt": "Key achievements and progress over the past year.",
+    "item3Title": "Regional Meeting",
+    "item3Excerpt": "Discussion on local development priorities."
+  },
+  "leader": {
+    "leadership": "Leadership",
+    "vision": "Vision",
+    "values": "Values",
+    "community": "Community",
+    "excerpt1": "Dedicated to serving the community.",
+    "excerpt2": "Building a stronger future together.",
+    "excerpt3": "Integrity, transparency, and progress.",
+    "excerpt4": "United for positive change.",
     "learnMore": "Learn more"
   },
   "common": {
     "learnMore": "Learn more",
     "download": "Download",
-    "joinUs": "Join Us"
+    "joinUs": "Join Us",
+    "view": "View →",
+    "language": "Language"
+  },
+  "footer": {
+    "tagline": "Building a stronger community together.",
+    "copyright": "Tenkasi. All rights reserved."
+  },
+  "gallery": {
+    "title": "Gallery"
+  },
+  "about": {
+    "title": "About",
+    "name": "Jeyabalan",
+    "intro": "Jeyabalan joined DMK at the age of 17 in 1992 and steadily rose through the party ranks, serving from Town Secretary to his current position as Union Secretary of the Tenkasi South District.",
+    "achievementsTitle": "Notable achievements of Jeyabalan:",
+    "achievement1": "65 party flag posts were created by Jeyabalan (then Town Secretary), each representing veteran DMK cadres from his locality of Surandai.",
+    "achievement2": "During his political career, Jeyabalan has established 7 Reading Rooms, reflecting his commitment to the core principles of the Dravidian Movement.",
+    "achievement3": "During the COVID pandemic, Jeyabalan set up Kalaignar Unavagam to provide food to people whose livelihoods were severely affected due to the lockdown. He also took special care of physically challenged individuals in the locality by providing essential aids during the pandemic.",
+    "achievement4": "During the Kargil War in 1999, Jeyabalan organized a public door-to-door fundraising campaign, mobilizing ₹1.11 lakh.",
+    "achievement5": "During the Thoothukudi floods of 2023, Jeyabalan carried out relief activities, assisting nearly 60,000 people with food and essential materials.",
+    "achievement6": "Jeyabalan has organized more than 80 public gatherings during his political career.",
+    "achievement7": "He has donated over ₹11 lakh to various schools for building construction, computer laboratories, furniture, and cycle stands."
   }
 }
