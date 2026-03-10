@@ -2,16 +2,25 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+This project includes environment-specific run configs:
+
+- `.env.dev`
+- `.env.staging`
+- `.env.prod`
+
+Update those files with the correct values for each environment.
+
+Run commands:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm dev            # local development (.env.dev)
+pnpm dev:staging    # run with staging config (.env.staging)
+
+pnpm build:staging  # build staging
+pnpm start:staging  # run staging build
+
+pnpm build:prod     # build production
+pnpm start:prod     # run production build
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

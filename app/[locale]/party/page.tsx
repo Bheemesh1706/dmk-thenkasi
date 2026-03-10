@@ -18,9 +18,7 @@ export default async function PartyPage({
     { key: "ideology", href: `/${locale}/party/ideology` },
     { key: "history", href: `/${locale}/party/history` },
     { key: "organizationStructure", href: `/${locale}/party/organizationals` },
-    { key: "frontals", href: `/${locale}/party/frontals` },
     { key: "electedRepresentatives", href: `/${locale}/party/electedrepresentatives` },
-    { key: "achievements", href: `/${locale}/party/achievements` },
   ];
 
   return (
@@ -29,7 +27,7 @@ export default async function PartyPage({
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
           {t("party")}
         </h1>
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {links.map(({ key, href }) => (
             <Link key={key} href={href}>
               <Card className="h-full">

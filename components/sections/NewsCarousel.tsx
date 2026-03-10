@@ -12,6 +12,7 @@ export interface NewsCarouselItem {
   title: string;
   excerpt: string;
   date: string;
+  backgroundImage?: string;
 }
 
 interface NewsCarouselProps {
@@ -71,20 +72,27 @@ export function NewsCarousel({ items }: NewsCarouselProps) {
             >
               <Card
                 className={cn(
-                  "h-full overflow-hidden transition-all duration-300",
+                  "h-full overflow-hidden transition-all duration-300 relative",
                   index === selectedIndex
                     ? "ring-2 ring-primary ring-offset-2 scale-[1.02] shadow-lg"
                     : "opacity-90"
                 )}
               >
-                <CardHeader className="pb-2">
-                  <h3 className="text-lg font-semibold">{item.title}</h3>
+                {item.backgroundImage && (
+                  <div
+                    className="absolute inset-0 bg-cover bg-center bg-no-repeat -z-10"
+                    style={{ backgroundImage: `url(${item.backgroundImage})` }}
+                  />
+                )}
+                <div className={item.backgroundImage ? "absolute inset-0 bg-black/40" : ""} />
+                <CardHeader className={cn("pb-2 relative", item.backgroundImage && "text-white")}>
+                  <h3 className={cn("text-lg font-semibold", item.backgroundImage && "text-white")}>{item.title}</h3>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-black/80 group-hover:text-black/90">
+                <CardContent className={item.backgroundImage ? "relative text-white/90" : ""}>
+                  <p className={cn("text-sm", item.backgroundImage ? "text-white/80" : "text-black/80 group-hover:text-black/90")}>
                     {item.excerpt}
                   </p>
-                  <p className="mt-2 text-xs text-black/70 group-hover:text-black/80">
+                  <p className={cn("mt-2 text-xs", item.backgroundImage ? "text-white/70" : "text-black/70 group-hover:text-black/80")}>
                     {item.date}
                   </p>
                 </CardContent>

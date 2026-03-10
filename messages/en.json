@@ -80,5 +80,45 @@
     "achievement5": "During the Thoothukudi floods of 2023, Jeyabalan carried out relief activities, assisting nearly 60,000 people with food and essential materials.",
     "achievement6": "Jeyabalan has organized more than 80 public gatherings during his political career.",
     "achievement7": "He has donated over ₹11 lakh to various schools for building construction, computer laboratories, furniture, and cycle stands."
+  },
+  "quickLinks": {
+    "title": "Explore Party",
+    "ideology": "Ideology",
+    "ideologyDesc": "Explore the core principles and objectives that guide our party",
+    "history": "History",
+    "historyDesc": "Learn about the rich history of the Dravidian movement",
+    "organizationStructure": "Organization",
+    "organDesc": "Understand the organizational hierarchy of DMK",
+    "frontals": "Frontals",
+    "frontalsDesc": "Discover the affiliated wings and organizations",
+    "visit": "Visit"
+  },
+  "ideology": {
+    "title": "Party Ideology",
+    "objective": "Party Objective",
+    "objectiveDesc": "Dravida Munnetra Kazhagam is committed to achieving the goal of bolstering the Dravidian cultural cooperation in the four linguistic states of Tamil Nadu, Andhra Pradesh, Kerala, and Karnataka under the unity of Indian sovereignty and constitutional law, as formulated by Arignar Anna. The party aims to build and protect the sovereignty, unity, and integrity of India while upholding the values of Equality, Secularism, and Democracy.",
+    "corePrinciple": "Core Principle",
+    "corePrincipleDesc": "Dravida Munnetra Kazhagam follows the principle of Duty, Dignity, and Discipline, as instructed by Arignar Anna. This involves protecting democratic rights in politics, establishing a non-dominant society, and carrying out reform work based on rationality to promote the revival of Dravidian ideology. The party aims to overcome poverty in the economic sphere and provide means for the well-being of all on an equitable basis. The party also aims to develop and promote the respective State languages without allowing other languages to dominate. The party believes in promoting the decentralization of powers from the Union Government and creating Autonomy in the states and federation at the center."
+  },
+  "history": {
+    "title": "History of DMK",
+    "justiceParty": "Justice Party",
+    "justicePartySince": "Since 1916",
+    "justicePartyDesc": "The Justice Party, established in 1916, aimed to advocate for the rights and representation of non-Brahmins and socially disadvantaged communities. Led by prominent leaders like Thanthai Periyar, the party fought against caste-based discrimination, championed social justice, and worked towards upliftment through educational reforms and reservation policies. The party played a significant role in shaping the Dravidian movement and had a lasting impact on the socio-political landscape of South India.",
+    "periyar": "Thanthai Periyar",
+    "periyarSince": "Since 1879",
+    "periyarDesc": "Thanthai Periyar, a revered social reformer born in 1879, dedicated his life to combating social inequality, caste discrimination, and gender oppression. As the driving force behind the Self-Respect Movement, he promoted rationalism, atheism, and the elimination of superstitious beliefs. Fearlessly championing social justice, Periyar worked tirelessly to secure the rights and upliftment of oppressed communities while striving to dismantle oppressive social norms. His contributions have left a lasting impact, inspiring transformative change not only in Tamil Nadu but also beyond.",
+    "anna": "Perarignar Anna",
+    "annaSince": "Since 1909",
+    "annaDesc": "Perarignar Anna, born in 1909, played a pivotal role in the Dravidian movement, advocating for social justice, Tamil nationalism, and self-respect. With remarkable oratory skills, he addressed caste inequality, language rights, regional autonomy. His progressive policies included legalising Self-Respect marriages, two-language policy, and subsidies for essential commodities like rice, improving the lives of the marginalized. His historic decision to rename Madras State as Tamil Nadu affirmed a distinct Tamil identity.",
+    "dmk": "Dravida Munnetra Kazhagam",
+    "dmkSince": "Since 1949",
+    "dmkDesc": "Founded in 1949, Dravida Munnetra Kazhagam (DMK) has reshaped the political fabric of Tamil Nadu, standing as a formidable force for social justice and equality. Beyond electoral success, the party has spearheaded pioneering policy reforms, prioritizing vital sectors like education, healthcare, and social welfare. Through proactive and visionary leaderships, the party has uplifted the lives of the people of Tamil Nadu, solidifying its legacy as a catalyst for transformative change in the state.",
+    "kalaignar": "Muthamizh Arignar Kalaignar",
+    "kalaignarSince": "Since 1924",
+    "kalaignarDesc": "Muthuvel Karunanidhi, fondly remembered as Kalaignar, was a towering figure in Tamil Nadu politics who served as the Chief Minister of the state for five separate terms. He was a staunch advocate of social justice and worked towards empowering the marginalised section of the society and promoting gender equality. He introduced several policies aimed at reducing caste-based discrimination and promoting equal opportunities for all. He was also a prolific writer, poet, and playwright who authored several literary works in Tamil.",
+    "stalin": "Thalapathy M.K Stalin",
+    "stalinSince": "Since 1953",
+    "stalinDesc": "Honorable Chief Minister Thalapathy M.K. Stalin has played a pivotal role in revitalizing and strengthening the Dravida Munnetra Kazhagam's influence in Tamil Nadu. Under his leadership, the party has undergone a remarkable transformation, consolidating its position within the state. With commitment to welfare schemes, healthcare, education, infrastructure, and social justice, he consistently addresses the pressing needs of the people. His inclusive approach and the Dravidian model of governance have firmly established him as a prominent figure in Indian politics."
   }
 }
