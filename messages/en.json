@@ -7,7 +7,7 @@
     "organizationStructure": "Organization Structure",
     "dmkLeadership": "DMK Leadership",
     "districtSecretaries": "District Secretaries",
-    "committeeMembers": "Committee Members",
+    "committeeMembers": "Union and Town Members",
     "frontals": "Frontals",
     "electedRepresentatives": "Elected Representatives",
     "achievements": "Achievements",
@@ -120,5 +120,18 @@
     "stalin": "Thalapathy M.K Stalin",
     "stalinSince": "Since 1953",
     "stalinDesc": "Honorable Chief Minister Thalapathy M.K. Stalin has played a pivotal role in revitalizing and strengthening the Dravida Munnetra Kazhagam's influence in Tamil Nadu. Under his leadership, the party has undergone a remarkable transformation, consolidating its position within the state. With commitment to welfare schemes, healthcare, education, infrastructure, and social justice, he consistently addresses the pressing needs of the people. His inclusive approach and the Dravidian model of governance have firmly established him as a prominent figure in Indian politics."
+  },
+  "organizationals": {
+    "unitIntro": "Choose a union or town to view its representatives, events, and achievements.",
+    "union": "Union",
+    "town": "Town",
+    "viewDetails": "View details ->",
+    "representatives": "Representatives",
+    "events": "Events",
+    "achievements": "Achievements",
+    "emptyState": "No union or town entries found yet.",
+    "noRepresentatives": "No representatives added yet.",
+    "noEvents": "No events added yet.",
+    "noAchievements": "No achievements added yet."
   }
 }

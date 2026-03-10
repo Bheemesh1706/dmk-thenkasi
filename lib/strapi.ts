@@ -5,10 +5,13 @@ import type {
   Committee,
   ElectedRepresentative,
   Frontal,
+  OrganizationUnit,
   StrapiResponse,
 } from "@/types/strapi";
 
 const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
+const ORGANIZATION_UNITS_ENDPOINT =
+  process.env.STRAPI_ORGANIZATION_UNITS_ENDPOINT || "organization-units";
 
 async function fetchStrapi<T>(
   path: string,
@@ -90,4 +93,43 @@ export async function getFrontals(
     locale
   );
   return res?.data ?? [];
+}
+
+export function toStrapiMediaUrl(url?: string): string | undefined {
+  if (!url) return undefined;
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  return `${STRAPI_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+}
+
+export async function getOrganizationUnits(
+  locale: "en" | "ta"
+): Promise<OrganizationUnit[]> {
+  const query =
+    `/` +
+    `${ORGANIZATION_UNITS_ENDPOINT}` +
+    `?sort=order:asc` +
+    `&populate[coverImage][populate]=*` +
+    `&populate[representatives][populate]=image` +
+    `&populate[events][populate]=image` +
+    `&populate[achievements][populate]=image`;
+
+  const res = await fetchStrapi<StrapiResponse<OrganizationUnit[]>>(query, locale);
+  return res?.data ?? [];
+}
+
+export async function getOrganizationUnitBySlug(
+  locale: "en" | "ta",
+  slug: string
+): Promise<OrganizationUnit | null> {
+  const query =
+    `/` +
+    `${ORGANIZATION_UNITS_ENDPOINT}` +
+    `?filters[slug][$eq]=${encodeURIComponent(slug)}` +
+    `&populate[coverImage][populate]=*` +
+    `&populate[representatives][populate]=image` +
+    `&populate[events][populate]=image` +
+    `&populate[achievements][populate]=image`;
+
+  const res = await fetchStrapi<StrapiResponse<OrganizationUnit[]>>(query, locale);
+  return res?.data?.[0] ?? null;
 }

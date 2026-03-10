@@ -5,6 +5,8 @@ interface Person {
   id: string;
   name: string;
   designation?: string;
+  image?: string;
+  place?: string;
   district?: string;
   constituency?: string;
 }
@@ -24,6 +26,8 @@ export function PersonListSection({ title, persons }: PersonListSectionProps) {
             key={person.id}
             name={person.name}
             designation={person.designation}
+            image={person.image}
+            place={person.place}
             district={person.district}
             constituency={person.constituency}
           />

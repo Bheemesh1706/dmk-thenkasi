@@ -141,3 +141,34 @@ export interface Frontal {
   image?: StrapiImage;
   order?: number;
 }
+
+export interface OrganizationContentItem {
+  id: number;
+  title_en?: string;
+  title_ta?: string;
+  description_en?: string;
+  description_ta?: string;
+  image?: StrapiImage;
+}
+
+export interface OrganizationRepresentative {
+  id: number;
+  name?: string;
+  designation?: string;
+  place?: string;
+  image?: StrapiImage;
+}
+
+export interface OrganizationUnit {
+  id: number;
+  documentId: string;
+  slug: string;
+  name_en?: string;
+  name_ta?: string;
+  type?: "union" | "town";
+  coverImage?: StrapiImage;
+  representatives?: OrganizationRepresentative[];
+  events?: OrganizationContentItem[];
+  achievements?: OrganizationContentItem[];
+  order?: number;
+}

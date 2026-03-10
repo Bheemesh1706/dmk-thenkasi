@@ -17,7 +17,6 @@ export default async function OrganizationalsPage({
 
   const sections = [
     { key: "dmkLeadership", href: "dmk-leadership" },
-    { key: "districtSecretaries", href: "district-secretaries" },
     { key: "committeeMembers", href: "committee-members" },
   ];
 
