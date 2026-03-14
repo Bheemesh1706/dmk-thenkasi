@@ -51,6 +51,7 @@ export default async function UnitDetailPage({
 }) {
   const { locale, section, unit } = await params;
   const { view } = await searchParams;
+  const strapiLocale = locale as "en" | "ta";
 
   if (section !== "committee-members") {
     notFound();
@@ -66,7 +67,7 @@ export default async function UnitDetailPage({
 
   const selectedView: "events" | "achievements" =
     view === "achievements" ? "achievements" : "events";
-  const items = await getUnionItemsByType(currentMember.name, selectedView);
+  const items = await getUnionItemsByType(currentMember.name, selectedView, strapiLocale);
 
   setRequestLocale(locale);
   const tNav = await getTranslations("nav");

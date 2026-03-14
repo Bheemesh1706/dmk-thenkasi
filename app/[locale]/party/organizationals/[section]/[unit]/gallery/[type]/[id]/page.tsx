@@ -23,6 +23,7 @@ export default async function UnitGalleryPage({
   }>;
 }) {
   const { locale, section, unit, type, id } = await params;
+  const strapiLocale = locale as "en" | "ta";
 
   if (section !== "committee-members") {
     notFound();
@@ -31,12 +32,12 @@ export default async function UnitGalleryPage({
   const selectedType: "events" | "achievements" =
     type === "achievements" ? "achievements" : type === "events" ? "events" : notFound();
 
-  const member = await getUnionAndTownMemberByKey(locale as "en" | "ta", unit);
+  const member = await getUnionAndTownMemberByKey(strapiLocale, unit);
   if (!member) {
     notFound();
   }
 
-  const item = await getUnionItemByTypeAndId(member.name, selectedType, id);
+  const item = await getUnionItemByTypeAndId(member.name, selectedType, id, strapiLocale);
   if (!item) {
     notFound();
   }

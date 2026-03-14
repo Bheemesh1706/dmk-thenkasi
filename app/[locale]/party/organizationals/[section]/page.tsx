@@ -75,11 +75,12 @@ export default async function OrganizationalSectionPage({
   }
 
   setRequestLocale(locale);
+  const strapiLocale = locale as "en" | "ta";
   const t = await getTranslations("nav");
   const tOrg = await getTranslations("organizationals");
   const leaderships =
     section === "dmk-leadership"
-      ? await getLeaderships()
+      ? await getLeaderships(strapiLocale)
       : [];
   const unionAndTownMembers =
     section === "committee-members"

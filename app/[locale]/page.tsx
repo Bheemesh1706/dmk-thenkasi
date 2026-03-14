@@ -18,13 +18,14 @@ export default async function HomePage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const strapiLocale = locale as "en" | "ta";
   setRequestLocale(locale);
 
   const [heroImages, recentUpdates, leaderships, galleries] = await Promise.all([
-    getHeroImages(),
-    getRecentUpdates(6),
-    getLeaderships(),
-    getGalleries(3),
+    getHeroImages(strapiLocale),
+    getRecentUpdates(strapiLocale, 6),
+    getLeaderships(strapiLocale),
+    getGalleries(strapiLocale, 3),
   ]);
 
   const heroImageUrl = toStrapiMediaUrl(heroImages[0]?.heroImage?.url);

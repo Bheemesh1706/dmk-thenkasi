@@ -11,10 +11,11 @@ export default async function AchievementsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const strapiLocale = locale as "en" | "ta";
   setRequestLocale(locale);
   const t = await getTranslations("nav");
 
-  const achievements = await getDistrictAchievements();
+  const achievements = await getDistrictAchievements(strapiLocale);
 
   return (
     <main>

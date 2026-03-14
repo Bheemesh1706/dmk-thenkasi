@@ -115,28 +115,33 @@ export async function getFrontals(
   return res?.data ?? [];
 }
 
-export async function getDistrictAchievements(): Promise<DistrictAchievement[]> {
+export async function getDistrictAchievements(
+  locale: "en" | "ta"
+): Promise<DistrictAchievement[]> {
   const res = await fetchStrapi<StrapiResponse<DistrictAchievement[]>>(
     `/district-achievements?populate=photos&sort=createdAt:desc`,
-    null
+    locale
   );
   return res?.data ?? [];
 }
 
-export async function getPartyWings(): Promise<PartyWing[]> {
+export async function getPartyWings(locale: "en" | "ta"): Promise<PartyWing[]> {
   const res = await fetchStrapi<StrapiResponse<PartyWing[]>>(
     `/party-wings?populate=wing_memebers&sort=createdAt:asc`,
-    null
+    locale
   );
   return res?.data ?? [];
 }
 
-export async function getPartyWingById(id: string): Promise<PartyWing | null> {
-  const res = await fetchStrapi<StrapiResponse<PartyWing>>(
-    `/party-wings/${id}?populate=wing_memebers`,
-    null
+export async function getPartyWingById(
+  locale: "en" | "ta",
+  documentId: string
+): Promise<PartyWing | null> {
+  const res = await fetchStrapi<StrapiResponse<PartyWing[]>>(
+    `/party-wings?filters[documentId][$eq]=${encodeURIComponent(documentId)}&populate=wing_memebers&pagination[limit]=1`,
+    locale
   );
-  return res?.data ?? null;
+  return res?.data?.[0] ?? null;
 }
 
 export function toStrapiMediaUrl(url?: string): string | undefined {
@@ -178,34 +183,44 @@ export async function getOrganizationUnitBySlug(
   return res?.data?.[0] ?? null;
 }
 
-export async function getHeroImages(): Promise<HeroImage[]> {
+export async function getHeroImages(
+  locale: "en" | "ta"
+): Promise<HeroImage[]> {
   const res = await fetchStrapi<StrapiResponse<HeroImage[]>>(
     `/hero-images?populate=heroImage&pagination[limit]=1`,
-    null
+    locale
   );
   return res?.data ?? [];
 }
 
-export async function getRecentUpdates(limit = 6): Promise<RecentUpdate[]> {
+export async function getRecentUpdates(
+  locale: "en" | "ta",
+  limit = 6
+): Promise<RecentUpdate[]> {
   const res = await fetchStrapi<StrapiResponse<RecentUpdate[]>>(
     `/recent-updates?sort=data:desc&pagination[limit]=${limit}`,
-    null
+    locale
   );
   return res?.data ?? [];
 }
 
-export async function getLeaderships(): Promise<Leadership[]> {
+export async function getLeaderships(
+  locale: "en" | "ta"
+): Promise<Leadership[]> {
   const res = await fetchStrapi<StrapiResponse<Leadership[]>>(
     `/leaderships?populate=image&sort=designation:asc`,
-    null
+    locale
   );
   return res?.data ?? [];
 }
 
-export async function getGalleries(limit = 3): Promise<Gallery[]> {
+export async function getGalleries(
+  locale: "en" | "ta",
+  limit = 3
+): Promise<Gallery[]> {
   const res = await fetchStrapi<StrapiResponse<Gallery[]>>(
     `/galleries?populate=images&sort=createdAt:desc&pagination[limit]=${limit}`,
-    null
+    locale
   );
   return res?.data ?? [];
 }
@@ -254,18 +269,19 @@ export async function getUnionAndTownMemberByKey(
 }
 
 export async function getUnionEventAndAchievementItems(
-  name: string
+  name: string,
+  locale: "en" | "ta"
 ): Promise<{ events: TestUnionAchievement[]; achievements: TestUnionAchievement[] }> {
   const endpointBase = toEndpointSlug(name);
 
   const [eventsRes, achievementsRes] = await Promise.all([
     fetchStrapi<StrapiResponse<TestUnionAchievement[]>>(
       `/${endpointBase}-events?populate=photos&pagination[limit]=200`,
-      null
+      locale
     ),
     fetchStrapi<StrapiResponse<TestUnionAchievement[]>>(
       `/${endpointBase}-achievements?populate=photos&pagination[limit]=200`,
-      null
+      locale
     ),
   ]);
 
@@ -277,12 +293,13 @@ export async function getUnionEventAndAchievementItems(
 
 export async function getUnionItemsByType(
   name: string,
-  type: "events" | "achievements"
+  type: "events" | "achievements",
+  locale: "en" | "ta"
 ): Promise<TestUnionAchievement[]> {
   const endpointBase = toEndpointSlug(name);
   const res = await fetchStrapi<StrapiResponse<TestUnionAchievement[]>>(
     `/${endpointBase}-${type}?populate=photos&pagination[limit]=200`,
-    null
+    locale
   );
   return res?.data ?? [];
 }
@@ -290,8 +307,9 @@ export async function getUnionItemsByType(
 export async function getUnionItemByTypeAndId(
   name: string,
   type: "events" | "achievements",
-  id: string
+  id: string,
+  locale: "en" | "ta"
 ): Promise<TestUnionAchievement | null> {
-  const items = await getUnionItemsByType(name, type);
+  const items = await getUnionItemsByType(name, type, locale);
   return items.find((item) => String(item.id) === id) ?? null;
 }

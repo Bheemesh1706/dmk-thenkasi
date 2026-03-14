@@ -11,8 +11,9 @@ export default async function WingMembersPage({
   params: Promise<{ locale: string; wingId: string }>;
 }) {
   const { locale, wingId } = await params;
+  const strapiLocale = locale as "en" | "ta";
 
-  const wing = await getPartyWingById(wingId);
+  const wing = await getPartyWingById(strapiLocale, wingId);
   if (!wing) {
     notFound();
   }

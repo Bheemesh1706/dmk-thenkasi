@@ -11,10 +11,11 @@ export default async function FrontalsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  const strapiLocale = locale as "en" | "ta";
   setRequestLocale(locale);
   const t = await getTranslations("nav");
 
-  const wings = await getPartyWings();
+  const wings = await getPartyWings(strapiLocale);
 
   return (
     <main>
