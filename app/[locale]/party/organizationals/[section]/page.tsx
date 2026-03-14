@@ -5,8 +5,13 @@ import Link from "next/link";
 import { Breadcrumb } from "@/components/party/Breadcrumb";
 import { PersonListSection } from "@/components/party/PersonListSection";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getOrganizationUnits } from "@/lib/strapi";
-import type { OrganizationUnit } from "@/types/strapi";
+import {
+  getLeaderships,
+  getUnionAndTownMembers,
+  toLowerCamelCase,
+  toStrapiMediaUrl,
+} from "@/lib/strapi";
+import type { UnionAndTownMember } from "@/types/strapi";
 
 const SECTIONS = ["dmk-leadership", "district-secretaries", "committee-members"] as const;
 
@@ -17,53 +22,37 @@ const mockDistrictSecretaries = [
 ];
 
 const mockLeadership = [
-  {
-    id: "1",
-    name: "Leader Name",
-    designation: "President",
-    place: "Chennai",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=320&q=80",
-  },
-  {
-    id: "2",
-    name: "Deputy Leader",
-    designation: "Vice President",
-    place: "Madurai",
-    image: "https://images.unsplash.com/photo-1584999734482-0361aecad844?auto=format&fit=crop&w=320&q=80",
-  },
+  { id: "1", name: "Leader Name", designation: "President", place: "Chennai" },
+  { id: "2", name: "Deputy Leader", designation: "Vice President", place: "Madurai" },
 ];
 
-const placeholderUnits: OrganizationUnit[] = [
+const placeholderUnits: UnionAndTownMember[] = [
   {
     id: 9001,
     documentId: "placeholder-surandai-union",
-    slug: "surandai-union",
-    name_en: "Surandai Union",
-    name_ta: "சுரண்டை ஒன்றியம்",
+    name: "Surandai Union",
+    representative: "Representative",
     type: "union",
   },
   {
     id: 9002,
     documentId: "placeholder-kadayanallur-union",
-    slug: "kadayanallur-union",
-    name_en: "Kadayanallur Union",
-    name_ta: "கடையநல்லூர் ஒன்றியம்",
+    name: "Kadayanallur Union",
+    representative: "Representative",
     type: "union",
   },
   {
     id: 9003,
     documentId: "placeholder-ayikudi-town",
-    slug: "ayikudi-town",
-    name_en: "Ayikudi Town",
-    name_ta: "ஆய்குடி நகரம்",
+    name: "Ayikudi Town",
+    representative: "Representative",
     type: "town",
   },
   {
     id: 9004,
     documentId: "placeholder-sivagiri-town",
-    slug: "sivagiri-town",
-    name_en: "Sivagiri Town",
-    name_ta: "சிவகிரி நகரம்",
+    name: "Sivagiri Town",
+    representative: "Representative",
     type: "town",
   },
 ];
@@ -88,11 +77,27 @@ export default async function OrganizationalSectionPage({
   setRequestLocale(locale);
   const t = await getTranslations("nav");
   const tOrg = await getTranslations("organizationals");
-  const organizationUnits =
-    section === "committee-members"
-      ? await getOrganizationUnits(locale as "en" | "ta")
+  const leaderships =
+    section === "dmk-leadership"
+      ? await getLeaderships()
       : [];
-  const unitsToRender = organizationUnits.length > 0 ? organizationUnits : placeholderUnits;
+  const unionAndTownMembers =
+    section === "committee-members"
+      ? await getUnionAndTownMembers(locale as "en" | "ta")
+      : [];
+  const leadershipToRender =
+    leaderships.length > 0
+      ? leaderships.map((leader) => ({
+          id: String(leader.id),
+          name: leader.name,
+          designation: leader.designation,
+          image: toStrapiMediaUrl(
+            leader.image?.formats?.small?.url ?? leader.image?.url
+          ),
+        }))
+      : mockLeadership;
+  const unitsToRender =
+    unionAndTownMembers.length > 0 ? unionAndTownMembers : placeholderUnits;
 
   const titleMap: Record<string, string> = {
     "dmk-leadership": t("dmkLeadership"),
@@ -114,7 +119,7 @@ export default async function OrganizationalSectionPage({
         />
 
         {section === "dmk-leadership" && (
-          <PersonListSection title={titleMap[section]} persons={mockLeadership} />
+          <PersonListSection title={titleMap[section]} persons={leadershipToRender} />
         )}
         {section === "district-secretaries" && (
           <PersonListSection title={titleMap[section]} persons={mockDistrictSecretaries} />
@@ -127,22 +132,25 @@ export default async function OrganizationalSectionPage({
             <p className="mt-3 text-sm text-muted-foreground">{tOrg("unitIntro")}</p>
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {unitsToRender.map((unit) => {
-                const displayName =
-                  locale === "ta"
-                    ? unit.name_ta ?? unit.name_en ?? unit.slug
-                    : unit.name_en ?? unit.name_ta ?? unit.slug;
+                const displayName = unit.name;
+                const routeKey = toLowerCamelCase(unit.name);
                 return (
                 <Link
                   key={unit.id}
-                  href={`/${locale}/party/organizationals/committee-members/${unit.slug}`}
+                  href={`/${locale}/party/organizationals/committee-members/${routeKey}`}
                 >
                   <Card className="h-full transition-shadow hover:shadow-md">
                     <CardHeader>
                       <h2 className="font-semibold">{displayName}</h2>
                     </CardHeader>
                     <CardContent>
+                      {unit.representative && (
+                        <p className="text-sm text-foreground/80">{unit.representative}</p>
+                      )}
                       <p className="text-sm text-muted-foreground">
-                        {unit.type === "union" ? tOrg("union") : tOrg("town")}
+                        {(unit.type ?? "").toLowerCase() === "union"
+                          ? tOrg("union")
+                          : tOrg("town")}
                       </p>
                       <span className="mt-3 inline-block text-sm font-medium text-primary">
                         {tOrg("viewDetails")}
@@ -153,7 +161,7 @@ export default async function OrganizationalSectionPage({
                 );
               })}
             </div>
-            {organizationUnits.length === 0 && (
+            {unionAndTownMembers.length === 0 && (
               <p className="mt-6 text-sm text-muted-foreground">{tOrg("emptyState")}</p>
             )}
           </div>

@@ -1,193 +1,98 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { Breadcrumb } from "@/components/party/Breadcrumb";
 import { SectionContainer } from "@/components/layout/SectionContainer";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { getOrganizationUnitBySlug, toStrapiMediaUrl } from "@/lib/strapi";
-import type { OrganizationUnit } from "@/types/strapi";
+import {
+  getUnionAndTownMemberByKey,
+  getUnionItemsByType,
+  toStrapiMediaUrl,
+} from "@/lib/strapi";
 
-const placeholderUnits: OrganizationUnit[] = [
+const fallbackMembers = [
   {
-    id: 9001,
-    documentId: "placeholder-surandai-union",
-    slug: "surandai-union",
-    name_en: "Surandai Union",
-    name_ta: "சுரண்டை ஒன்றியம்",
+    key: "surandaiUnion",
+    name: "Surandai Union",
+    representative: "Representative",
     type: "union",
-    representatives: [
-      {
-        id: 1,
-        name: "R. Kumar",
-        designation: "Union Secretary",
-        place: "Surandai",
-        image: {
-          id: 1,
-          url: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80",
-        },
-      },
-    ],
-    events: [
-      {
-        id: 1,
-        title_en: "Public Outreach Camp",
-        title_ta: "பொது தொடர்பு முகாம்",
-        description_en: "A placeholder event for Surandai Union.",
-        description_ta: "சுரண்டை ஒன்றியத்திற்கான மாதிரி நிகழ்வு.",
-        image: {
-          id: 11,
-          url: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=80",
-        },
-      },
-    ],
-    achievements: [
-      {
-        id: 1,
-        title_en: "Membership Milestone",
-        title_ta: "உறுப்பினர் சாதனை",
-        description_en: "Placeholder achievement entry for upcoming CMS data.",
-        description_ta: "வரவிருக்கும் CMS தரவுக்கான மாதிரி சாதனை பதிவு.",
-        image: {
-          id: 21,
-          url: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80",
-        },
-      },
-    ],
+    bio: "",
   },
   {
-    id: 9002,
-    documentId: "placeholder-kadayanallur-union",
-    slug: "kadayanallur-union",
-    name_en: "Kadayanallur Union",
-    name_ta: "கடையநல்லூர் ஒன்றியம்",
+    key: "kadayanallurUnion",
+    name: "Kadayanallur Union",
+    representative: "Representative",
     type: "union",
-    representatives: [
-      {
-        id: 2,
-        name: "T. Selvi",
-        designation: "Deputy Organizer",
-        place: "Kadayanallur",
-      },
-    ],
-    events: [
-      {
-        id: 2,
-        title_en: "Women Wing Meet",
-        title_ta: "பெண்கள் அணி கூட்டம்",
-        description_en: "Placeholder event details for Kadayanallur.",
-        description_ta: "கடையநல்லூர் ஒன்றியத்திற்கான மாதிரி நிகழ்வு விவரங்கள்.",
-      },
-    ],
-    achievements: [
-      {
-        id: 2,
-        title_en: "Social Welfare Drive",
-        title_ta: "சமூக நல இயக்கம்",
-        description_en: "Placeholder achievement details for Kadayanallur.",
-        description_ta: "கடையநல்லூர் ஒன்றியத்திற்கான மாதிரி சாதனை விவரங்கள்.",
-      },
-    ],
+    bio: "",
   },
   {
-    id: 9003,
-    documentId: "placeholder-ayikudi-town",
-    slug: "ayikudi-town",
-    name_en: "Ayikudi Town",
-    name_ta: "ஆய்குடி நகரம்",
+    key: "ayikudiTown",
+    name: "Ayikudi Town",
+    representative: "Representative",
     type: "town",
-    representatives: [
-      {
-        id: 3,
-        name: "V. Senthil",
-        designation: "Town Secretary",
-        place: "Ayikudi",
-      },
-    ],
-    events: [
-      {
-        id: 3,
-        title_en: "Town Public Meeting",
-        title_ta: "நகர பொதுக்கூட்டம்",
-        description_en: "Placeholder event for Ayikudi Town.",
-        description_ta: "ஆய்குடி நகரத்திற்கான மாதிரி நிகழ்வு.",
-      },
-    ],
-    achievements: [
-      {
-        id: 3,
-        title_en: "Volunteer Expansion",
-        title_ta: "தன்னார்வ குழு விரிவாக்கம்",
-        description_en: "Placeholder achievement for Ayikudi Town.",
-        description_ta: "ஆய்குடி நகரத்திற்கான மாதிரி சாதனை.",
-      },
-    ],
+    bio: "",
   },
   {
-    id: 9004,
-    documentId: "placeholder-sivagiri-town",
-    slug: "sivagiri-town",
-    name_en: "Sivagiri Town",
-    name_ta: "சிவகிரி நகரம்",
+    key: "sivagiriTown",
+    name: "Sivagiri Town",
+    representative: "Representative",
     type: "town",
-    representatives: [
-      {
-        id: 4,
-        name: "G. Anand",
-        designation: "Town Secretary",
-        place: "Sivagiri",
-      },
-    ],
-    events: [
-      {
-        id: 4,
-        title_en: "Civic Awareness Session",
-        title_ta: "பொதுமக்கள் விழிப்புணர்வு நிகழ்வு",
-        description_en: "Placeholder event for Sivagiri Town.",
-        description_ta: "சிவகிரி நகரத்திற்கான மாதிரி நிகழ்வு.",
-      },
-    ],
-    achievements: [
-      {
-        id: 4,
-        title_en: "Community Participation Growth",
-        title_ta: "சமூக பங்கேற்பு வளர்ச்சி",
-        description_en: "Placeholder achievement for Sivagiri Town.",
-        description_ta: "சிவகிரி நகரத்திற்கான மாதிரி சாதனை.",
-      },
-    ],
+    bio: "",
   },
 ];
 
 export default async function UnitDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string; section: string; unit: string }>;
+  searchParams: Promise<{ view?: string }>;
 }) {
   const { locale, section, unit } = await params;
+  const { view } = await searchParams;
 
   if (section !== "committee-members") {
     notFound();
   }
 
-  const currentUnitFromCms = await getOrganizationUnitBySlug(
-    locale as "en" | "ta",
-    unit
-  );
-  const currentUnit =
-    currentUnitFromCms ??
-    placeholderUnits.find((item) => item.slug === unit) ??
-    null;
-  if (!currentUnit) {
+  const memberFromCms = await getUnionAndTownMemberByKey(locale as "en" | "ta", unit);
+  const fallbackMember = fallbackMembers.find((item) => item.key === unit) ?? null;
+  const currentMember = memberFromCms ?? fallbackMember;
+
+  if (!currentMember) {
     notFound();
   }
+
+  const selectedView: "events" | "achievements" =
+    view === "achievements" ? "achievements" : "events";
+  const items = await getUnionItemsByType(currentMember.name, selectedView);
 
   setRequestLocale(locale);
   const tNav = await getTranslations("nav");
   const tOrg = await getTranslations("organizationals");
-  const displayName =
-    locale === "ta"
-      ? currentUnit.name_ta ?? currentUnit.name_en ?? currentUnit.slug
-      : currentUnit.name_en ?? currentUnit.name_ta ?? currentUnit.slug;
+  const memberImage = toStrapiMediaUrl(
+    "image" in currentMember
+      ? currentMember.image?.formats?.small?.url ?? currentMember.image?.url
+      : undefined
+  );
+
+  const itemCards = items.flatMap((item) => {
+    const coverPhoto = (item.photos ?? [])[0];
+    return [
+      {
+      key: String(item.id),
+      id: String(item.id),
+      title: item.title ?? (selectedView === "events" ? tOrg("events") : tOrg("achievements")),
+      serviceType: item.serviceType ?? "-",
+      slogans: item.slogans ?? "-",
+      imageUrl: coverPhoto
+        ? toStrapiMediaUrl(coverPhoto.formats?.small?.url ?? coverPhoto.url)
+        : undefined,
+      imageAlt: coverPhoto?.alternativeText ?? item.title ?? "",
+    }
+    ];
+  });
 
   return (
     <main>
@@ -199,11 +104,11 @@ export default async function UnitDetailPage({
             { label: tNav("party"), href: "/party" },
             { label: tNav("organizationStructure"), href: "/party/organizationals" },
             { label: tNav("committeeMembers"), href: "/party/organizationals/committee-members" },
-            { label: displayName },
+            { label: currentMember.name },
           ]}
         />
 
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{displayName}</h1>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{currentMember.name}</h1>
 
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-3">
           <Card>
@@ -211,112 +116,99 @@ export default async function UnitDetailPage({
               <h2 className="text-lg font-semibold">{tOrg("representatives")}</h2>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-4 text-sm text-muted-foreground">
-                {currentUnit.representatives?.map((person) => {
-                  const imageUrl = toStrapiMediaUrl(person.image?.url);
-                  return (
-                    <li key={person.id} className="flex items-start gap-3">
-                      {imageUrl && (
-                        <Image
-                          src={imageUrl}
-                          alt={person.name ?? "Representative"}
-                          width={56}
-                          height={70}
-                          className="h-[70px] w-[56px] rounded object-cover"
-                        />
-                      )}
-                      <div>
-                        <p className="font-medium text-foreground">{person.name}</p>
-                        <p>{person.designation}</p>
-                        <p>{person.place}</p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-              {(!currentUnit.representatives || currentUnit.representatives.length === 0) && (
-                <p className="text-sm text-muted-foreground">{tOrg("noRepresentatives")}</p>
-              )}
+              <div className="flex items-start gap-3">
+                {memberImage && (
+                  <Image
+                    src={memberImage}
+                    alt={currentMember.name}
+                    width={56}
+                    height={70}
+                    className="h-[70px] w-[56px] rounded object-cover"
+                  />
+                )}
+                <div className="text-sm text-muted-foreground">
+                  <p className="font-medium text-foreground">
+                    {currentMember.representative ?? currentMember.name}
+                  </p>
+                  <p>{currentMember.type}</p>
+                  {currentMember.bio && <p className="mt-2">{currentMember.bio}</p>}
+                </div>
+              </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <h2 className="text-lg font-semibold">{tOrg("events")}</h2>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-4 text-sm text-muted-foreground">
-                {currentUnit.events?.map((event) => {
-                  const imageUrl = toStrapiMediaUrl(event.image?.url);
-                  const title =
-                    locale === "ta"
-                      ? event.title_ta ?? event.title_en
-                      : event.title_en ?? event.title_ta;
-                  const description =
-                    locale === "ta"
-                      ? event.description_ta ?? event.description_en
-                      : event.description_en ?? event.description_ta;
-                  return (
-                    <li key={event.id} className="space-y-2">
-                      {imageUrl && (
-                        <Image
-                          src={imageUrl}
-                          alt={title ?? "Event"}
-                          width={320}
-                          height={180}
-                          className="h-36 w-full rounded object-cover"
-                        />
-                      )}
-                      <p className="font-medium text-foreground">{title}</p>
-                      <p>{description}</p>
-                    </li>
-                  );
-                })}
-              </ul>
-              {(!currentUnit.events || currentUnit.events.length === 0) && (
-                <p className="text-sm text-muted-foreground">{tOrg("noEvents")}</p>
-              )}
-            </CardContent>
-          </Card>
+          <div className="space-y-4 lg:col-span-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <Link href={`/${locale}/party/organizationals/committee-members/${unit}?view=events`}>
+                <Card
+                  className={
+                    selectedView === "events"
+                      ? "border-primary ring-1 ring-primary"
+                      : "hover:border-primary/40"
+                  }
+                >
+                  <CardHeader>
+                    <h2 className="text-lg font-semibold">{tOrg("events")}</h2>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">Click to load events</p>
+                  </CardContent>
+                </Card>
+              </Link>
+              <Link href={`/${locale}/party/organizationals/committee-members/${unit}?view=achievements`}>
+                <Card
+                  className={
+                    selectedView === "achievements"
+                      ? "border-primary ring-1 ring-primary"
+                      : "hover:border-primary/40"
+                  }
+                >
+                  <CardHeader>
+                    <h2 className="text-lg font-semibold">{tOrg("achievements")}</h2>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">Click to load achievements</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            </div>
 
-          <Card>
-            <CardHeader>
-              <h2 className="text-lg font-semibold">{tOrg("achievements")}</h2>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-4 text-sm text-muted-foreground">
-                {currentUnit.achievements?.map((achievement) => {
-                  const imageUrl = toStrapiMediaUrl(achievement.image?.url);
-                  const title =
-                    locale === "ta"
-                      ? achievement.title_ta ?? achievement.title_en
-                      : achievement.title_en ?? achievement.title_ta;
-                  const description =
-                    locale === "ta"
-                      ? achievement.description_ta ?? achievement.description_en
-                      : achievement.description_en ?? achievement.description_ta;
-                  return (
-                    <li key={achievement.id} className="space-y-2">
-                      {imageUrl && (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              {itemCards.map((card) => (
+                <Link
+                  key={card.key}
+                  href={`/${locale}/party/organizationals/committee-members/${unit}/gallery/${selectedView}/${card.id}`}
+                >
+                  <Card className="overflow-hidden transition-shadow hover:shadow-md">
+                    <CardHeader className="pb-2">
+                      <h3 className="line-clamp-2 text-base font-semibold">{card.title}</h3>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {card.imageUrl ? (
                         <Image
-                          src={imageUrl}
-                          alt={title ?? "Achievement"}
+                          src={card.imageUrl}
+                          alt={card.imageAlt || card.title}
                           width={320}
-                          height={180}
-                          className="h-36 w-full rounded object-cover"
+                          height={200}
+                          className="h-40 w-full rounded object-cover"
                         />
+                      ) : (
+                        <div className="flex h-40 w-full items-center justify-center rounded bg-muted text-sm text-muted-foreground">
+                          No image
+                        </div>
                       )}
-                      <p className="font-medium text-foreground">{title}</p>
-                      <p>{description}</p>
-                    </li>
-                  );
-                })}
-              </ul>
-              {(!currentUnit.achievements || currentUnit.achievements.length === 0) && (
-                <p className="text-sm text-muted-foreground">{tOrg("noAchievements")}</p>
-              )}
-            </CardContent>
-          </Card>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+
+            {items.length === 0 && (
+              <p className="text-sm text-muted-foreground">
+                {selectedView === "events" ? tOrg("noEvents") : tOrg("noAchievements")}
+              </p>
+            )}
+          </div>
         </div>
       </SectionContainer>
     </main>

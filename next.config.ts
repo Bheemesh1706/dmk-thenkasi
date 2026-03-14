@@ -17,6 +17,10 @@ const nextConfig: NextConfig = {
         hostname: parsedStrapiUrl.hostname,
         port: parsedStrapiUrl.port || undefined,
       },
+      {
+        protocol: "https",
+        hostname: "*.r2.dev",
+      },
     ],
   },
 };

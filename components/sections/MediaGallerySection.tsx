@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { SectionContainer } from "@/components/layout/SectionContainer";
 
@@ -30,8 +31,14 @@ export async function MediaGallerySection({
             key={img.id}
             className="aspect-square overflow-hidden rounded-lg border border-[var(--border)] bg-muted hover:border-primary/30 transition-colors"
           >
-            <div className="flex h-full w-full items-center justify-center p-4">
-              <span className="text-sm text-muted-foreground">{img.alt}</span>
+            <div className="relative h-full w-full">
+              <Image
+                src={img.url}
+                alt={img.alt}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 50vw, 33vw"
+              />
             </div>
           </div>
         ))}

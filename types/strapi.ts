@@ -12,10 +12,86 @@ export interface StrapiResponse<T> {
 
 export interface StrapiImage {
   id: number;
+  documentId?: string;
   url: string;
   alternativeText?: string;
   width?: number;
   height?: number;
+  formats?: {
+    thumbnail?: StrapiImage;
+    small?: StrapiImage;
+    medium?: StrapiImage;
+    large?: StrapiImage;
+  };
+}
+
+export interface HeroImage {
+  id: number;
+  documentId: string;
+  heroImage?: StrapiImage | null;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+}
+
+export interface RecentUpdate {
+  id: number;
+  documentId: string;
+  title: string;
+  description?: string;
+  data: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+}
+
+export interface Leadership {
+  id: number;
+  documentId: string;
+  designation: string;
+  name: string;
+  image?: StrapiImage | null;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+}
+
+export interface Gallery {
+  id: number;
+  documentId: string;
+  event: string;
+  images?: StrapiImage[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+}
+
+export interface UnionAndTownMember {
+  id: number;
+  documentId: string;
+  name: string;
+  representative?: string | null;
+  type?: string | null;
+  bio?: string | null;
+  image?: StrapiImage | null;
+  locale?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+}
+
+export interface TestUnionAchievement {
+  id: number;
+  documentId: string;
+  title?: string;
+  description?: string;
+  serviceType?: string;
+  slogans?: string;
+  data?: string;
+  photos?: StrapiImage[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
 }
 
 export interface Page {

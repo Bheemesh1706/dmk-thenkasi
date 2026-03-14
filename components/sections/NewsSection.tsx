@@ -1,7 +1,5 @@
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { SectionContainer } from "@/components/layout/SectionContainer";
-import { Button } from "@/components/ui/button";
 import { NewsCarousel, type NewsCarouselItem } from "@/components/sections/NewsCarousel";
 
 interface NewsItem {
@@ -16,7 +14,6 @@ interface NewsItem {
 }
 
 interface NewsSectionProps {
-  locale: string;
   items?: NewsItem[];
 }
 
@@ -28,12 +25,21 @@ const mockNewsItems: NewsItem[] = [
   { id: "5", titleKey: "item5Title", excerptKey: "item5Excerpt", date: "2026-02-23", category: "partyWork" },
 ];
 
-export async function NewsSection({ locale, items = mockNewsItems }: NewsSectionProps) {
+export async function NewsSection({ items = mockNewsItems }: NewsSectionProps) {
   const t = await getTranslations("news");
+
+  const resolveCategory = (category?: string) => {
+    if (!category) return "";
+    try {
+      return t(`category.${category.toLowerCase()}`);
+    } catch {
+      return category;
+    }
+  };
 
   const carouselItems: NewsCarouselItem[] = items.map((item) => ({
     id: item.id,
-    category: item.category ? t(`category.${item.category.toLowerCase()}`) : "",
+    category: resolveCategory(item.category),
     title: item.titleKey ? t(item.titleKey) : item.title ?? "",
     excerpt: item.excerptKey ? t(item.excerptKey) : item.excerpt ?? "",
     date: item.date,

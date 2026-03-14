@@ -6,28 +6,46 @@ import type {
   ElectedRepresentative,
   Frontal,
   OrganizationUnit,
+  HeroImage,
+  RecentUpdate,
+  Leadership,
+  Gallery,
+  UnionAndTownMember,
+  TestUnionAchievement,
   StrapiResponse,
 } from "@/types/strapi";
 
 const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
+const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN || "";
 const ORGANIZATION_UNITS_ENDPOINT =
   process.env.STRAPI_ORGANIZATION_UNITS_ENDPOINT || "organization-units";
 
 async function fetchStrapi<T>(
   path: string,
-  locale: "en" | "ta",
+  locale: "en" | "ta" | null,
   options?: RequestInit
 ): Promise<T | null> {
   try {
-    const url = `${STRAPI_URL}/api${path}${path.includes("?") ? "&" : "?"}locale=${locale}`;
+    const localeParam = locale ? `${path.includes("?") ? "&" : "?"}locale=${locale}` : "";
+    const url = `${STRAPI_URL}/api${path}${localeParam}`;
     const res = await fetch(url, {
       ...options,
+      headers: {
+        ...(STRAPI_API_TOKEN ? { Authorization: `Bearer ${STRAPI_API_TOKEN}` } : {}),
+        ...(options?.headers ?? {}),
+      },
       next: { revalidate: 3600 },
     });
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json as T;
-  } catch {
+
+    if (!res.ok) {
+      let errorBody = "";
+      try { errorBody = await res.text(); } catch { /* ignore */ }
+      console.error(`[Strapi] ${res.status} ${res.statusText} — GET ${url}`, errorBody);
+      return null;
+    }
+    return res.json() as Promise<T>;
+  } catch (err) {
+    console.error(`[Strapi] Network error — GET ${STRAPI_URL}/api${path}:`, err);
     return null;
   }
 }
@@ -132,4 +150,122 @@ export async function getOrganizationUnitBySlug(
 
   const res = await fetchStrapi<StrapiResponse<OrganizationUnit[]>>(query, locale);
   return res?.data?.[0] ?? null;
+}
+
+export async function getHeroImages(): Promise<HeroImage[]> {
+  const res = await fetchStrapi<StrapiResponse<HeroImage[]>>(
+    `/hero-images?populate=heroImage&pagination[limit]=1`,
+    null
+  );
+  return res?.data ?? [];
+}
+
+export async function getRecentUpdates(limit = 6): Promise<RecentUpdate[]> {
+  const res = await fetchStrapi<StrapiResponse<RecentUpdate[]>>(
+    `/recent-updates?sort=data:desc&pagination[limit]=${limit}`,
+    null
+  );
+  return res?.data ?? [];
+}
+
+export async function getLeaderships(): Promise<Leadership[]> {
+  const res = await fetchStrapi<StrapiResponse<Leadership[]>>(
+    `/leaderships?populate=image&sort=designation:asc`,
+    null
+  );
+  return res?.data ?? [];
+}
+
+export async function getGalleries(limit = 3): Promise<Gallery[]> {
+  const res = await fetchStrapi<StrapiResponse<Gallery[]>>(
+    `/galleries?populate=images&sort=createdAt:desc&pagination[limit]=${limit}`,
+    null
+  );
+  return res?.data ?? [];
+}
+
+export function toLowerCamelCase(value: string): string {
+  const parts = value
+    .trim()
+    .replace(/[^a-zA-Z0-9\s_-]/g, "")
+    .split(/[\s_-]+/)
+    .filter(Boolean);
+
+  if (parts.length === 0) return "";
+  return parts
+    .map((part, index) => {
+      const lower = part.toLowerCase();
+      return index === 0 ? lower : `${lower[0].toUpperCase()}${lower.slice(1)}`;
+    })
+    .join("");
+}
+
+function toEndpointSlug(value: string): string {
+  return value
+    .trim()
+    .replace(/[^a-zA-Z0-9\s-]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
+export async function getUnionAndTownMembers(
+  locale: "en" | "ta"
+): Promise<UnionAndTownMember[]> {
+  const res = await fetchStrapi<StrapiResponse<UnionAndTownMember[]>>(
+    `/tenkasi-union-and-town-secretaries?populate=image&pagination[limit]=100`,
+    locale
+  );
+  return res?.data ?? [];
+}
+
+export async function getUnionAndTownMemberByKey(
+  locale: "en" | "ta",
+  key: string
+): Promise<UnionAndTownMember | null> {
+  const members = await getUnionAndTownMembers(locale);
+  return members.find((member) => toLowerCamelCase(member.name) === key) ?? null;
+}
+
+export async function getUnionEventAndAchievementItems(
+  name: string
+): Promise<{ events: TestUnionAchievement[]; achievements: TestUnionAchievement[] }> {
+  const endpointBase = toEndpointSlug(name);
+
+  const [eventsRes, achievementsRes] = await Promise.all([
+    fetchStrapi<StrapiResponse<TestUnionAchievement[]>>(
+      `/${endpointBase}-events?populate=photos&pagination[limit]=200`,
+      null
+    ),
+    fetchStrapi<StrapiResponse<TestUnionAchievement[]>>(
+      `/${endpointBase}-achievements?populate=photos&pagination[limit]=200`,
+      null
+    ),
+  ]);
+
+  return {
+    events: eventsRes?.data ?? [],
+    achievements: achievementsRes?.data ?? [],
+  };
+}
+
+export async function getUnionItemsByType(
+  name: string,
+  type: "events" | "achievements"
+): Promise<TestUnionAchievement[]> {
+  const endpointBase = toEndpointSlug(name);
+  const res = await fetchStrapi<StrapiResponse<TestUnionAchievement[]>>(
+    `/${endpointBase}-${type}?populate=photos&pagination[limit]=200`,
+    null
+  );
+  return res?.data ?? [];
+}
+
+export async function getUnionItemByTypeAndId(
+  name: string,
+  type: "events" | "achievements",
+  id: string
+): Promise<TestUnionAchievement | null> {
+  const items = await getUnionItemsByType(name, type);
+  return items.find((item) => String(item.id) === id) ?? null;
 }
