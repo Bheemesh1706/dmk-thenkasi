@@ -19,6 +19,7 @@ export default async function PartyPage({
     { key: "history", href: `/${locale}/party/history` },
     { key: "organizationStructure", href: `/${locale}/party/organizationals` },
     { key: "electedRepresentatives", href: `/${locale}/party/electedrepresentatives` },
+    { key: "frontals", href: `/${locale}/party/frontals` },
   ];
 
   return (

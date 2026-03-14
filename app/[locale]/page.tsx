@@ -1,7 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { NewsSection } from "@/components/sections/NewsSection";
-import { LeaderSection } from "@/components/sections/LeaderSection";
 import { AboutSection } from "@/components/sections/AboutSection";
 import { QuickLinksSection } from "@/components/sections/QuickLinksSection";
 import { MediaGallerySection } from "@/components/sections/MediaGallerySection";
@@ -38,13 +37,6 @@ export default async function HomePage({
     category: "partyWork",
   }));
 
-  const leaderItems = leaderships.map((leader) => ({
-    id: String(leader.id),
-    title: leader.name,
-    excerpt: leader.designation,
-    image: toStrapiMediaUrl(leader.image?.formats?.small?.url ?? leader.image?.url),
-  }));
-
   const galleryImages = galleries
     .flatMap((gallery) => gallery.images ?? [])
     .slice(0, 6)
@@ -59,7 +51,6 @@ export default async function HomePage({
     <main className="flex flex-col">
       <HeroSection heroImageUrl={heroImageUrl} />
       <NewsSection items={newsItems} />
-      <LeaderSection items={leaderItems} />
       <AboutSection />
       <QuickLinksSection locale={locale} />
       <MediaGallerySection locale={locale} images={galleryImages} />

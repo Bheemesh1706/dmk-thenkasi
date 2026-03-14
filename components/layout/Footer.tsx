@@ -37,35 +37,6 @@ export async function Footer({ locale }: { locale: string }) {
               </li>
             </ul>
           </div>
-          <div>
-            <h3 className="text-sm font-semibold text-white">{t("resources")}</h3>
-            <ul className="mt-2 space-y-2">
-              <li>
-                <Link
-                  href={`${prefix}/events`}
-                  className="text-sm text-[var(--foreground-light)] hover:text-white transition-colors"
-                >
-                  {t("events")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={`${prefix}/media`}
-                  className="text-sm text-[var(--foreground-light)] hover:text-white transition-colors"
-                >
-                  {t("media")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href={`${prefix}/gallery`}
-                  className="text-sm text-[var(--foreground-light)] hover:text-white transition-colors"
-                >
-                  {t("gallery")}
-                </Link>
-              </li>
-            </ul>
-          </div>
         </div>
         <div className="mt-8 border-t border-white/10 pt-8 text-center text-sm text-[var(--foreground-light)]">
           © {new Date().getFullYear()} {tFooter("copyright")}

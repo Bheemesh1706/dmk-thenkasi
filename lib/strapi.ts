@@ -12,6 +12,8 @@ import type {
   Gallery,
   UnionAndTownMember,
   TestUnionAchievement,
+  PartyWing,
+  DistrictAchievement,
   StrapiResponse,
 } from "@/types/strapi";
 
@@ -111,6 +113,30 @@ export async function getFrontals(
     locale
   );
   return res?.data ?? [];
+}
+
+export async function getDistrictAchievements(): Promise<DistrictAchievement[]> {
+  const res = await fetchStrapi<StrapiResponse<DistrictAchievement[]>>(
+    `/district-achievements?populate=photos&sort=createdAt:desc`,
+    null
+  );
+  return res?.data ?? [];
+}
+
+export async function getPartyWings(): Promise<PartyWing[]> {
+  const res = await fetchStrapi<StrapiResponse<PartyWing[]>>(
+    `/party-wings?populate=wing_memebers&sort=createdAt:asc`,
+    null
+  );
+  return res?.data ?? [];
+}
+
+export async function getPartyWingById(id: string): Promise<PartyWing | null> {
+  const res = await fetchStrapi<StrapiResponse<PartyWing>>(
+    `/party-wings/${id}?populate=wing_memebers`,
+    null
+  );
+  return res?.data ?? null;
 }
 
 export function toStrapiMediaUrl(url?: string): string | undefined {

@@ -248,3 +248,33 @@ export interface OrganizationUnit {
   achievements?: OrganizationContentItem[];
   order?: number;
 }
+
+export interface WingMember {
+  id: number;
+  documentId: string;
+  name: string;
+  title?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+}
+
+export interface PartyWing {
+  id: number;
+  documentId: string;
+  wingName: string;
+  wing_memebers?: WingMember[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+}
+
+export interface DistrictAchievement {
+  id: number;
+  documentId: string;
+  title?: string;
+  photos?: StrapiImage[];
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+}

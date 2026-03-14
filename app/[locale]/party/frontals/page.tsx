@@ -3,12 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { SectionContainer } from "@/components/layout/SectionContainer";
 import { Breadcrumb } from "@/components/party/Breadcrumb";
 import { FrontalCard } from "@/components/party/FrontalCard";
-
-const mockFrontals = [
-  { name: "Youth Wing", description: "Youth organization" },
-  { name: "Women's Wing", description: "Women's organization" },
-  { name: "Students Wing", description: "Student organization" },
-];
+import { getPartyWings } from "@/lib/strapi";
 
 export default async function FrontalsPage({
   params,
@@ -18,6 +13,8 @@ export default async function FrontalsPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("nav");
+
+  const wings = await getPartyWings();
 
   return (
     <main>
@@ -34,11 +31,12 @@ export default async function FrontalsPage({
           {t("frontals")}
         </h1>
         <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {mockFrontals.map((frontal) => (
+          {wings.map((wing) => (
             <FrontalCard
-              key={frontal.name}
-              name={frontal.name}
-              description={frontal.description}
+              key={wing.documentId}
+              name={wing.wingName}
+              description={`${wing.wing_memebers?.length ?? 0} members`}
+              link={`/${locale}/party/frontals/${wing.documentId}`}
             />
           ))}
         </div>

@@ -9,7 +9,6 @@ const navLinks = [
   { key: "home", href: "" },
   { key: "party", href: "party" },
   { key: "achievements", href: "achievements" },
-  { key: "resources", href: "resources" },
 ] as const;
 
 export function Navbar({ className }: { className?: string }) {
