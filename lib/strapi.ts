@@ -16,6 +16,7 @@ import type {
   DistrictAchievement,
   StrapiResponse,
 } from "@/types/strapi";
+import { buildRegionFilter } from "@/lib/region";
 
 const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN || "";
@@ -25,11 +26,19 @@ const ORGANIZATION_UNITS_ENDPOINT =
 async function fetchStrapi<T>(
   path: string,
   locale: "en" | "ta" | null,
+  extraParams?: Record<string, string>,
   options?: RequestInit
 ): Promise<T | null> {
   try {
-    const localeParam = locale ? `${path.includes("?") ? "&" : "?"}locale=${locale}` : "";
-    const url = `${STRAPI_URL}/api${path}${localeParam}`;
+    const qsParts: string[] = [];
+    if (locale) qsParts.push(`locale=${locale}`);
+    if (extraParams) {
+      for (const [k, v] of Object.entries(extraParams)) {
+        qsParts.push(`${k}=${v}`);
+      }
+    }
+    const sep = path.includes("?") ? "&" : "?";
+    const url = `${STRAPI_URL}/api${path}${qsParts.length ? `${sep}${qsParts.join("&")}` : ""}`;
     const res = await fetch(url, {
       ...options,
       headers: {
@@ -125,21 +134,27 @@ export async function getDistrictAchievements(
   return res?.data ?? [];
 }
 
-export async function getPartyWings(locale: "en" | "ta"): Promise<PartyWing[]> {
+export async function getPartyWings(
+  locale: "en" | "ta",
+  region?: string | null,
+): Promise<PartyWing[]> {
   const res = await fetchStrapi<StrapiResponse<PartyWing[]>>(
     `/party-wings?populate=wing_memebers&sort=createdAt:asc`,
-    locale
+    locale,
+    buildRegionFilter(region),
   );
   return res?.data ?? [];
 }
 
 export async function getPartyWingById(
   locale: "en" | "ta",
-  documentId: string
+  documentId: string,
+  region?: string | null,
 ): Promise<PartyWing | null> {
   const res = await fetchStrapi<StrapiResponse<PartyWing[]>>(
     `/party-wings?filters[documentId][$eq]=${encodeURIComponent(documentId)}&populate=wing_memebers&pagination[limit]=1`,
-    locale
+    locale,
+    buildRegionFilter(region),
   );
   return res?.data?.[0] ?? null;
 }
@@ -251,20 +266,23 @@ function toEndpointSlug(value: string): string {
 }
 
 export async function getUnionAndTownMembers(
-  locale: "en" | "ta"
+  locale: "en" | "ta",
+  region?: string | null,
 ): Promise<UnionAndTownMember[]> {
   const res = await fetchStrapi<StrapiResponse<UnionAndTownMember[]>>(
     `/tenkasi-union-and-town-secretaries?populate=image&pagination[limit]=100`,
-    locale
+    locale,
+    buildRegionFilter(region),
   );
   return res?.data ?? [];
 }
 
 export async function getUnionAndTownMemberByKey(
   locale: "en" | "ta",
-  key: string
+  key: string,
+  region?: string | null,
 ): Promise<UnionAndTownMember | null> {
-  const members = await getUnionAndTownMembers(locale);
+  const members = await getUnionAndTownMembers(locale, region);
   return members.find((member) => toLowerCamelCase(member.name) === key) ?? null;
 }
 

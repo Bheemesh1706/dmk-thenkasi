@@ -13,6 +13,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
+import { RegionSwitcher } from "@/components/shared/RegionSwitcher";
 import { Separator } from "@/components/ui/separator";
 
 const navLinks = [
@@ -56,6 +57,10 @@ export function MobileNav() {
             </Link>
           ))}
           <Separator />
+          <div className="flex flex-col gap-2">
+            <span className="text-sm text-muted-foreground">{tCommon("region")}</span>
+            <RegionSwitcher />
+          </div>
           <div className="flex flex-col gap-2">
             <span className="text-sm text-muted-foreground">{tCommon("language")}</span>
             <LanguageSwitcher />

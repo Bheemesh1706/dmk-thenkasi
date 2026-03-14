@@ -4,6 +4,7 @@ import { SectionContainer } from "@/components/layout/SectionContainer";
 import { Breadcrumb } from "@/components/party/Breadcrumb";
 import { FrontalCard } from "@/components/party/FrontalCard";
 import { getPartyWings } from "@/lib/strapi";
+import { getServerRegion } from "@/lib/region.server";
 
 export default async function FrontalsPage({
   params,
@@ -14,8 +15,9 @@ export default async function FrontalsPage({
   const strapiLocale = locale as "en" | "ta";
   setRequestLocale(locale);
   const t = await getTranslations("nav");
+  const region = await getServerRegion();
 
-  const wings = await getPartyWings(strapiLocale);
+  const wings = await getPartyWings(strapiLocale, region);
 
   return (
     <main>

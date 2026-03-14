@@ -10,6 +10,7 @@ import {
   getUnionItemByTypeAndId,
   toStrapiMediaUrl,
 } from "@/lib/strapi";
+import { getServerRegion } from "@/lib/region.server";
 
 export default async function UnitGalleryPage({
   params,
@@ -24,6 +25,7 @@ export default async function UnitGalleryPage({
 }) {
   const { locale, section, unit, type, id } = await params;
   const strapiLocale = locale as "en" | "ta";
+  const region = await getServerRegion();
 
   if (section !== "committee-members") {
     notFound();
@@ -32,7 +34,7 @@ export default async function UnitGalleryPage({
   const selectedType: "events" | "achievements" =
     type === "achievements" ? "achievements" : type === "events" ? "events" : notFound();
 
-  const member = await getUnionAndTownMemberByKey(strapiLocale, unit);
+  const member = await getUnionAndTownMemberByKey(strapiLocale, unit, region);
   if (!member) {
     notFound();
   }

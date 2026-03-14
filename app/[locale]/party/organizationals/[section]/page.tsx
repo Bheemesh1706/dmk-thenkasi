@@ -11,51 +11,9 @@ import {
   toLowerCamelCase,
   toStrapiMediaUrl,
 } from "@/lib/strapi";
-import type { UnionAndTownMember } from "@/types/strapi";
+import { getServerRegion } from "@/lib/region.server";
 
 const SECTIONS = ["dmk-leadership", "district-secretaries", "committee-members"] as const;
-
-const mockDistrictSecretaries = [
-  { id: "1", name: "District Secretary A", designation: "District Secretary", district: "District North" },
-  { id: "2", name: "District Secretary B", designation: "District Incharge", district: "District South" },
-  { id: "3", name: "District Secretary C", designation: "District Secretary", district: "District East" },
-];
-
-const mockLeadership = [
-  { id: "1", name: "Leader Name", designation: "President", place: "Chennai" },
-  { id: "2", name: "Deputy Leader", designation: "Vice President", place: "Madurai" },
-];
-
-const placeholderUnits: UnionAndTownMember[] = [
-  {
-    id: 9001,
-    documentId: "placeholder-surandai-union",
-    name: "Surandai Union",
-    representative: "Representative",
-    type: "union",
-  },
-  {
-    id: 9002,
-    documentId: "placeholder-kadayanallur-union",
-    name: "Kadayanallur Union",
-    representative: "Representative",
-    type: "union",
-  },
-  {
-    id: 9003,
-    documentId: "placeholder-ayikudi-town",
-    name: "Ayikudi Town",
-    representative: "Representative",
-    type: "town",
-  },
-  {
-    id: 9004,
-    documentId: "placeholder-sivagiri-town",
-    name: "Sivagiri Town",
-    representative: "Representative",
-    type: "town",
-  },
-];
 
 export function generateStaticParams() {
   return ["en", "ta"].flatMap((locale) =>
@@ -76,29 +34,27 @@ export default async function OrganizationalSectionPage({
 
   setRequestLocale(locale);
   const strapiLocale = locale as "en" | "ta";
+  const region = await getServerRegion();
   const t = await getTranslations("nav");
   const tOrg = await getTranslations("organizationals");
+
   const leaderships =
     section === "dmk-leadership"
       ? await getLeaderships(strapiLocale)
       : [];
   const unionAndTownMembers =
     section === "committee-members"
-      ? await getUnionAndTownMembers(locale as "en" | "ta")
+      ? await getUnionAndTownMembers(strapiLocale, region)
       : [];
-  const leadershipToRender =
-    leaderships.length > 0
-      ? leaderships.map((leader) => ({
-          id: String(leader.id),
-          name: leader.name,
-          designation: leader.designation,
-          image: toStrapiMediaUrl(
-            leader.image?.formats?.small?.url ?? leader.image?.url
-          ),
-        }))
-      : mockLeadership;
-  const unitsToRender =
-    unionAndTownMembers.length > 0 ? unionAndTownMembers : placeholderUnits;
+
+  const leadershipPersons = leaderships.map((leader) => ({
+    id: String(leader.id),
+    name: leader.name,
+    designation: leader.designation,
+    image: toStrapiMediaUrl(
+      leader.image?.formats?.small?.url ?? leader.image?.url
+    ),
+  }));
 
   const titleMap: Record<string, string> = {
     "dmk-leadership": t("dmkLeadership"),
@@ -120,10 +76,10 @@ export default async function OrganizationalSectionPage({
         />
 
         {section === "dmk-leadership" && (
-          <PersonListSection title={titleMap[section]} persons={leadershipToRender} />
+          <PersonListSection title={titleMap[section]} persons={leadershipPersons} />
         )}
         {section === "district-secretaries" && (
-          <PersonListSection title={titleMap[section]} persons={mockDistrictSecretaries} />
+          <PersonListSection title={titleMap[section]} persons={[]} />
         )}
         {section === "committee-members" && (
           <div className="mt-8">
@@ -132,7 +88,7 @@ export default async function OrganizationalSectionPage({
             </h1>
             <p className="mt-3 text-sm text-muted-foreground">{tOrg("unitIntro")}</p>
             <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {unitsToRender.map((unit) => {
+              {unionAndTownMembers.map((unit) => {
                 const displayName = unit.name;
                 const routeKey = toLowerCamelCase(unit.name);
                 return (

@@ -2,12 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import { Breadcrumb } from "@/components/party/Breadcrumb";
 import { PersonListSection } from "@/components/party/PersonListSection";
-
-const mockRepresentatives = [
-  { id: "1", name: "Representative A", constituency: "Constituency 1", designation: "MLA" },
-  { id: "2", name: "Representative B", constituency: "Constituency 2", designation: "MP" },
-  { id: "3", name: "Representative C", constituency: "Constituency 3", designation: "MLA" },
-];
+import { getElectedRepresentatives, toStrapiMediaUrl } from "@/lib/strapi";
 
 export default async function ElectedRepresentativesPage({
   params,
@@ -17,6 +12,15 @@ export default async function ElectedRepresentativesPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("nav");
+
+  const reps = await getElectedRepresentatives(locale as "en" | "ta");
+  const persons = reps.map((r) => ({
+    id: String(r.id),
+    name: r.name,
+    designation: r.designation,
+    constituency: r.constituency,
+    image: toStrapiMediaUrl(r.image?.formats?.small?.url ?? r.image?.url),
+  }));
 
   return (
     <main>
@@ -31,11 +35,7 @@ export default async function ElectedRepresentativesPage({
         />
         <PersonListSection
           title={t("electedRepresentatives")}
-          persons={mockRepresentatives.map((r) => ({
-            ...r,
-            designation: r.designation,
-            constituency: `${r.constituency} (${r.designation})`,
-          }))}
+          persons={persons}
         />
       </div>
     </main>

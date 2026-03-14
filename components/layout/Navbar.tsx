@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/shared/LanguageSwitcher";
+import { RegionSwitcher } from "@/components/shared/RegionSwitcher";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -30,7 +31,8 @@ export function Navbar({ className }: { className?: string }) {
           {t(key)}
         </Link>
       ))}
-      <LanguageSwitcher className="ml-4" />
+      <RegionSwitcher className="ml-4" />
+      <LanguageSwitcher className="ml-2" />
     </nav>
   );
 }

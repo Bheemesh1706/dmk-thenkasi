@@ -10,37 +10,7 @@ import {
   getUnionItemsByType,
   toStrapiMediaUrl,
 } from "@/lib/strapi";
-
-const fallbackMembers = [
-  {
-    key: "surandaiUnion",
-    name: "Surandai Union",
-    representative: "Representative",
-    type: "union",
-    bio: "",
-  },
-  {
-    key: "kadayanallurUnion",
-    name: "Kadayanallur Union",
-    representative: "Representative",
-    type: "union",
-    bio: "",
-  },
-  {
-    key: "ayikudiTown",
-    name: "Ayikudi Town",
-    representative: "Representative",
-    type: "town",
-    bio: "",
-  },
-  {
-    key: "sivagiriTown",
-    name: "Sivagiri Town",
-    representative: "Representative",
-    type: "town",
-    bio: "",
-  },
-];
+import { getServerRegion } from "@/lib/region.server";
 
 export default async function UnitDetailPage({
   params,
@@ -52,18 +22,19 @@ export default async function UnitDetailPage({
   const { locale, section, unit } = await params;
   const { view } = await searchParams;
   const strapiLocale = locale as "en" | "ta";
+  const region = await getServerRegion();
 
   if (section !== "committee-members") {
     notFound();
   }
 
-  const memberFromCms = await getUnionAndTownMemberByKey(locale as "en" | "ta", unit);
-  const fallbackMember = fallbackMembers.find((item) => item.key === unit) ?? null;
-  const currentMember = memberFromCms ?? fallbackMember;
+  const memberFromCms = await getUnionAndTownMemberByKey(strapiLocale, unit, region);
 
-  if (!currentMember) {
+  if (!memberFromCms) {
     notFound();
   }
+
+  const currentMember = memberFromCms;
 
   const selectedView: "events" | "achievements" =
     view === "achievements" ? "achievements" : "events";

@@ -4,6 +4,7 @@ import { SectionContainer } from "@/components/layout/SectionContainer";
 import { Breadcrumb } from "@/components/party/Breadcrumb";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { getPartyWingById } from "@/lib/strapi";
+import { getServerRegion } from "@/lib/region.server";
 
 export default async function WingMembersPage({
   params,
@@ -12,8 +13,9 @@ export default async function WingMembersPage({
 }) {
   const { locale, wingId } = await params;
   const strapiLocale = locale as "en" | "ta";
+  const region = await getServerRegion();
 
-  const wing = await getPartyWingById(strapiLocale, wingId);
+  const wing = await getPartyWingById(strapiLocale, wingId, region);
   if (!wing) {
     notFound();
   }
