@@ -18,7 +18,7 @@ import type {
 } from "@/types/strapi";
 import { buildRegionFilter } from "@/lib/region";
 
-const STRAPI_URL = process.env.STRAPI_URL || "http://localhost:1337";
+const STRAPI_URL = process.env.STRAPI_URL || "https://admin.dmksouthtenkasi.in";
 const STRAPI_API_TOKEN = process.env.STRAPI_API_TOKEN || "";
 const ORGANIZATION_UNITS_ENDPOINT =
   process.env.STRAPI_ORGANIZATION_UNITS_ENDPOINT || "organization-units";
